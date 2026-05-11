@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-random",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An n8n community node that randomly picks one or more items from a list — supports input items or array fields, configurable count, deduplication, and optional seeding",
   "keywords": [
     "n8n-community-node-package",
@@ -18,7 +18,7 @@
   "homepage": "https://github.com/victor-folorunso/n8n-nodes-random",
   "repository": {
     "type": "git",
-    "url": "https://github.com/victor-folorunso/n8n-nodes-random"
+    "url": "git+https://github.com/victor-folorunso/n8n-nodes-random.git"
   },
   "main": "index.js",
   "scripts": {
