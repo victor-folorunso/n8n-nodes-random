@@ -5,45 +5,32 @@ An [n8n](https://n8n.io) community node that randomly picks one or more items fr
 [![npm version](https://img.shields.io/npm/v/n8n-nodes-random.svg)](https://www.npmjs.com/package/n8n-nodes-random)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+Useful for random selection, sampling, lottery draws, A/B test splitting, and any workflow where you need randomness.
+
 ---
 
-## Features
+## What it does
 
-| Feature | Details |
-|---|---|
-| **Two source modes** | Pick from **input items** or from an **array field** on each item |
-| **Configurable count** | Pick 1 → N candidates; defaults to 1 |
-| **Drag & drop** | In List Field mode, drag any array field from the data panel straight into the _List Field_ input |
-| **Duplicates control** | Allow or prevent the same candidate appearing more than once |
-| **Seeded randomness** | Supply an integer seed for reproducible, deterministic picks |
-| **Two outputs** | **Picked** pin for selected items; **Remaining** pin for everything else |
-| **Pick metadata** | Every output item includes a `_pick` object with `poolSize`, `pickCount`, `allowDuplicates`, and `seeded` |
+**Random** is an n8n community node that picks one or more random items from a list. Two modes:
+
+- **Input Items** — all items flowing into the node form the pool. Picked items go to the **Picked** output; the rest go to **Remaining**.
+- **List Field** — each item has an array field (e.g. `countries`, `options`). The node picks from that array and writes the result into a new field on the item.
 
 ---
 
 ## Installation
 
-In your n8n instance go to **Settings → Community Nodes → Install** and enter:
+In your n8n instance go to **Settings > Community Nodes > Install** and enter:
 
 ```
 n8n-nodes-random
 ```
 
----
+Or via CLI:
 
-## Usage
-
-### Mode: Input Items (default)
-
-All items flowing into the **Random** node form the pool. The node picks N of them randomly and routes them to the **Picked** output. Everything else goes to **Remaining**.
-
-**Example:** You have 20 leads coming in and want to A/B test on 5 random ones.
-
-### Mode: List Field
-
-Each item is processed independently. You point the node at an array field (e.g. `options` or `data.choices`), and it picks N values from that array, writing the result into a new field on the same item.
-
-**Drag & drop:** Open the data panel on the left, find your array field, and drag it straight into the _List Field_ input.
+```bash
+npm install n8n-nodes-random
+```
 
 ---
 
@@ -51,25 +38,30 @@ Each item is processed independently. You point the node at an array field (e.g.
 
 | Parameter | Default | Description |
 |---|---|---|
-| Source | Input Items | Where to source the pool — input items or a field on each item |
-| List Field | — | Field name containing the array (List Field mode only). Supports dot-notation. |
+| Source | Input Items | Input Items or List Field mode |
+| List Field | | Field containing the array to pick from. Supports dot-notation (`data.choices`). Drag and drop from the data panel. |
 | Output Field | `picked` | Field name to write the result into (List Field mode only) |
 | Pick Count | `1` | How many items to pick |
-| Allow Duplicates | `false` | Whether the same item can be picked more than once |
-| Always Output an Array | `false` | Wrap result in array even when Pick Count is 1 (List Field mode only) |
-| Random Seed | — | Optional integer for reproducible results. Leave blank for true randomness. |
+| Allow Duplicates | `false` | Allow the same item to be picked more than once |
+| Always Output an Array | `false` | Wrap result in an array even when Pick Count is 1 |
+| Random Seed | | Integer seed for reproducible results. Leave blank for true randomness. |
 
 ---
 
-## Output metadata
+## Outputs
 
-Every picked item carries a `_pick` field:
+| Pin | Description |
+|---|---|
+| Picked | The randomly selected items or values |
+| Remaining | Everything not selected (Input Items mode) or items with an empty/missing array (List Field mode) |
+
+Every picked item includes a `_pick` metadata field:
 
 ```json
 {
   "_pick": {
-    "poolSize": 20,
-    "pickCount": 5,
+    "poolSize": 10,
+    "pickCount": 1,
     "allowDuplicates": false,
     "seeded": false
   }
@@ -81,14 +73,12 @@ Every picked item carries a `_pick` field:
 ## Releasing a new version
 
 ```bash
-# 1. Bump version in package.json, then:
 git add . && git commit -m "release: v0.x.x"
 git tag v0.x.x
 git push && git push --tags
-# GitHub Actions builds and publishes to npm automatically.
 ```
 
-To retag after a fix: `retag.bat 0.x.x`
+GitHub Actions builds and publishes to npm automatically on every version tag.
 
 ---
 

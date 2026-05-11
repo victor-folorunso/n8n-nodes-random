@@ -167,22 +167,29 @@ export class Random implements INodeType {
 
     // ── Mode B: pick from an array field on each item ─────────────────────────
     if (source === 'listField') {
-      const listField   = this.getNodeParameter('listField', 0) as string;
       const outputField = this.getNodeParameter('outputField', 0) as string;
       const alwaysArray = this.getNodeParameter('alwaysArray', 0) as boolean;
-
-      if (!listField.trim()) {
-        throw new NodeOperationError(this.getNode(), 'List Field cannot be empty in List Field mode.');
-      }
 
       const picked: INodeExecutionData[]    = [];
       const remaining: INodeExecutionData[] = [];
 
       for (let i = 0; i < items.length; i++) {
-        const fieldValue = listField.split('.').reduce<unknown>(
-          (obj, key) => (obj && typeof obj === 'object' ? (obj as IDataObject)[key] : undefined),
-          items[i].json,
-        );
+        // Read per-item so expressions like {{ $json.countries }} resolve correctly
+        const rawField = this.getNodeParameter('listField', i) as unknown;
+
+        // Case 1: expression already resolved to an array — use it directly
+        // Case 2: string field name — navigate item.json by dot-notation
+        let fieldValue: unknown;
+        if (Array.isArray(rawField)) {
+          fieldValue = rawField;
+        } else if (typeof rawField === 'string' && rawField.trim()) {
+          fieldValue = rawField.trim().split('.').reduce<unknown>(
+            (obj, key) => (obj && typeof obj === 'object' ? (obj as IDataObject)[key] : undefined),
+            items[i].json,
+          );
+        } else {
+          throw new NodeOperationError(this.getNode(), 'List Field must be a field name or an expression that returns an array.');
+        }
 
         if (!Array.isArray(fieldValue) || !fieldValue.length) {
           remaining.push(items[i]);
