@@ -1,0 +1,48 @@
+{
+  "name": "n8n-nodes-random",
+  "version": "0.1.0",
+  "description": "An n8n community node that randomly picks one or more items from a list — supports input items or array fields, configurable count, deduplication, and optional seeding",
+  "keywords": [
+    "n8n-community-node-package",
+    "random",
+    "pick",
+    "sample",
+    "shuffle",
+    "lottery",
+    "selection",
+    "list",
+    "array"
+  ],
+  "license": "MIT",
+  "author": "Victor Folorunso",
+  "homepage": "https://github.com/victor-folorunso/n8n-nodes-random",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/victor-folorunso/n8n-nodes-random"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [],
+    "nodes": [
+      "dist/Random/Random.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": ">=0.23.0",
+    "@types/node": "^22.19.17",
+    "n8n-workflow": "^2.16.0",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
