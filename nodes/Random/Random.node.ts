@@ -80,7 +80,7 @@ export class Random implements INodeType {
           {
             name: 'List Field',
             value: 'listField',
-            description: 'Pick from an array stored in a field — drag & drop a field from the data panel',
+            description: 'Pick from an array stored in a field. Drag and drop a field from the data panel to fill automatically.',
           },
         ],
         default: 'inputItems',

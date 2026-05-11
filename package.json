@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-random",
-  "version": "0.1.1",
-  "description": "An n8n community node that randomly picks one or more items from a list — supports input items or array fields, configurable count, deduplication, and optional seeding",
+  "version": "0.1.2",
+  "description": "An n8n community node for random selection. Pick one or more random items from any list in your n8n workflow.",
   "keywords": [
     "n8n-community-node-package",
     "random",
