@@ -196,9 +196,9 @@ export class Random implements INodeType {
           ...items[i],
           json: {
             ...items[i].json,
-            [outputField]: outputValue,
-            _pick: { poolSize: fieldValue.length, pickCount: picks.length, allowDuplicates: allowDups, seeded: !!seed },
-          },
+            [outputField]: outputValue as IDataObject,
+            _pick: { poolSize: fieldValue.length, pickCount: picks.length, allowDuplicates: allowDups, seeded: !!seed } as IDataObject,
+          } as IDataObject,
         });
       }
 
